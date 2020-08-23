@@ -2,13 +2,12 @@
 
 let searchString = document.getElementById('addcar');
 let result = document.getElementById('result');
+
 let story = {
-  123: "M 123 KC Организация1",
-  234: "M 234 KK Организация2",
-  345: "К 345 ХТ Организация3",
+1: "one",
+2: "two",
+3: "three"
 };
-
-
 
 // json practica
 
@@ -21,6 +20,14 @@ console.log("Story object:", savedStory);
 
 let localStory = Object.assign({}, savedStory);
 
+for (let key in localStory) { // "Последние"
+let i;
+
+stats.value = stats.value + " --> " + localStory[key];
+}
+
+let saveLastStory;
+
 function click1() {
 
 result.value="undefined"; // в случае если перебор не обнаружит сохраненный ключ свойства
@@ -29,25 +36,36 @@ result.value="undefined"; // в случае если перебор не обн
 
       if(key == searchString.value) {
         result.value = story[key];
+        saveLastStory = key;
+        console.log(saveLastStory);
       }
 
-  } // end цикла(перебор ключей)
+  } // end цикла(перебор ключей для stroy{})
 
   for (let key in localStory) {
 
       if(key == searchString.value) {
         result.value = localStory[key];
+        saveLastStory = key;
       }
 
-  } // end цикла(перебор ключей)
+// нужно создать функцию добавления несколько машин в значение свойства, если номера ключей совпадает
+
+  } // end цикла(перебор ключей for object localStory{})
+
+      if(searchString.value == "+" + saveLastStory) {
+          addCarInProperty();
+          alert("work");
+          return;
+        }
 
       if(result.value == "undefined") {
-        addcar();
+        addCar();
       }
 
 } // end func click
 
-function addcar() {
+function addCar() {
 
   let quest = confirm("Такой машины нет, хотите внести?");
 
@@ -60,7 +78,21 @@ function addcar() {
       console.log(localStorage.getItem("profile")); // work
 
 
+// stats.value = stats.value + " " + result.value + " --> ";
 
-      // localStorage.clear(); // clear localStory
+
+      console.log ("localStorage.clear();") // clear localStory
+      }
+}
+
+function addCarInProperty() {
+
+    let quest = confirm(`Вы хотите добавить машину к номеру: "${saveLastStory}" ?`);
+
+      if(quest == true) {
+      let a = prompt(`Введите название фирмы для машины: "${saveLastStory}" `, "название");
+      localStory[saveLastStory] = story[saveLastStory] + " | " +a;
+
+      localStorage.setItem("profile", JSON.stringify(localStory));
       }
 }
